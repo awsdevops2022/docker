@@ -35,7 +35,7 @@ phases:
       # - command
   build:
     commands:
-      - docker build -t ubuntu/git:v1
+      - docker build -t ubuntu/git:v1 BasicTemplates/Dockerfile
       # - command
   post_build:
     commands:
