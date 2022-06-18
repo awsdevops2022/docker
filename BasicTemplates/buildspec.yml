@@ -31,7 +31,7 @@ phases:
       # - command
   pre_build:
     commands:
-      - echo "Nothing to do in pre-build"
+      - echo "Setting environment variables to tag image..."
       - "version=v1"
       - echo "${version}"
       # - command
