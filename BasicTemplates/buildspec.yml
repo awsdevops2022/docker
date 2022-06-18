@@ -35,12 +35,13 @@ phases:
       # - command
   build:
     commands:
-      - docker build -f BasicTemplates/Dockerfile .
+      - docker build -f BasicTemplates/Dockerfile -t ubuntu_git:${version} --build-arg imageVersion=20.04 .
     
       # - command
   post_build:
     commands:
-      - echo "Build completed"
+      - if [ $? -eq "0" ]; then echo "Build Successful"; else echo "Build failed"; fi 
+    
       # - command
 #reports:
   #report-name-or-arn:
