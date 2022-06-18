@@ -32,15 +32,17 @@ phases:
   pre_build:
     commands:
       - echo "Nothing to do in pre-build"
+      - "version=v1"
+      - echo "${version}"
       # - command
   build:
     commands:
-      - docker build -t base-images/ubuntugit:v1 --build-arg imageVersion=20.04 -f BasicTemplates/Dockerfile .
+      - docker build -t basic-images/ubuntugit:${version} --build-arg imageVersion=20.04 -f BasicTemplates/Dockerfile .
     
       # - command
   post_build:
     commands:
-      - if [ $? -eq "0" ]; then echo "Build Successful"; else echo "Build failed"; fi 
+      - /bin/sh -c 'if [ $? -eq "0" ]; then echo "Build Successful"; else echo "Build failed"; fi'
     
       # - command
 #reports:
