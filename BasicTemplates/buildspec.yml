@@ -37,7 +37,7 @@ phases:
       # - command
   build:
     commands:
-      - docker build -t basic-images/ubuntugit:${version} --build-arg imageVersion=20.04 -f BasicTemplates/Dockerfile .
+      - docker build -t basic-images/ubuntu_git:${version} --build-arg imageVersion=20.04 -f BasicTemplates/Dockerfile .
     
       # - command
   post_build:
