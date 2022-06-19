@@ -27,8 +27,9 @@ phases:
       # name: version
       # name: version
     commands:
-      - echo "Nothing to do in install phase"
-      # - command
+      - echo "Enabling docker daemon..."
+      - nohup /usr/local/bin/dockerd --host=unix:///var/run/docker.sock --host=tcp://0.0.0.0:2375 --storage-driver=overlay&
+      - timeout 15 sh -c "until docker info; do echo .; sleep 1; done"
   pre_build:
     commands:
       - echo "Setting environment variables to tag image..."
