@@ -76,6 +76,16 @@ Resources:
                   - codebuild:BatchPutCodeCoverages
                 Resource:
                   - Fn::Sub: arn:aws:codebuild:${AWS::Region}:${AWS::AccountId}:report-group/SimpleDockerBaseImageProject-*
+              - Action:
+                  - 'ecr:BatchCheckLayerAvailability'
+                  - 'ecr:CompleteLayerUpload'
+                  - 'ecr:GetAuthorizationToken'
+                  - 'ecr:InitiateLayerUpload'
+                  - 'ecr:PutImage'
+                  - 'ecr:UploadLayerPart'
+                Resource: '*'
+                Effect: Allow
+
 
 #Builds a docker image
 
@@ -98,6 +108,15 @@ Resources:
           #RegistryCredential: 
             #RegistryCredential
           Type: LINUX_CONTAINER
+          EnvironmentVariables: 
+            - Name: "AWS_DEFAULT_REGION"
+              Value: !Sub "${AWS::Region}"
+            - Name: "AWS_ACCOUNT_ID"
+              Value: !Sub "${AWS::AccountId}"
+            - Name: "IMAGE_REPO_NAME"
+              Value: "base-images"
+            - Name: "IMAGE_TAG"
+              Value: "latest"
 
       #FileSystemLocations: 
         #- ProjectFileSystemLocation

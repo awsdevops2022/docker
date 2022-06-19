@@ -33,19 +33,21 @@ phases:
   pre_build:
     commands:
       - echo "Setting environment variables to tag image..."
-      - "version=v1"
-      - echo "${version}"
+      - echo "Logging into AWS ECR..."
+      - aws ecr get-login-password --region $AWS_DEFAULT_REGION --username AWS --password-stdin $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com
       # - command
   build:
     commands:
-      - docker build -t basic-images/ubuntu_git:${version} --build-arg imageVersion=20.04 -f BasicTemplates/Dockerfile .
-    
-      # - command
+      - echo "Build completed on `date`"
+      - docker build -t $IMAGE_REPO_NAME:$IMAGE_TAG --build-arg imageVersion=20.04 -f BasicTemplates/Dockerfile .
+      - docker tag $IMAGE_REPO_NAME:$IMAGE_TAG $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_REPO_NAME:$IMAGE_TAG
+     #- command
   post_build:
     commands:
-      - /bin/sh -c 'if [ $? -eq "0" ]; then echo "Build Successful"; else echo "Build failed"; fi'
-    
-      # - command
+      - /bin/sh -c 'if [ $? -eq "0" ]; then echo "Build Successful on `date`"; else echo "Build failed"; fi'
+      - echo "Pushing docker image to $IMAGE_REPO_NAME"
+      - docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_REPO_NAME:$IMAGE_TAG
+     #- command
 #reports:
   #report-name-or-arn:
     #files:
