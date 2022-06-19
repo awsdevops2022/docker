@@ -1,7 +1,7 @@
 AWSTemplateFormatVersion: "2010-09-09"
 Description: >
   Building Docker Images using AWS CodeBuild with GitHub integration. 
-  Resources used: AWS CodeBuild, ClouFormation, SSM, IAM, GitHub.
+  Resources used: AWS CodeBuild, ClouFormation, AWS ECR, SSM, IAM, GitHub.
 
 
 Parameters:
