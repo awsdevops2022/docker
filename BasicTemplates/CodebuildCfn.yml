@@ -1,6 +1,7 @@
 AWSTemplateFormatVersion: "2010-09-09"
 Description: >
-  Building Docker Images using AWS CodeBuild with GitHub integration
+  Building Docker Images using AWS CodeBuild with GitHub integration. 
+  Resources used: AWS CodeBuild, ClouFormation, SSM, IAM, GitHub.
 
 
 Parameters:
@@ -8,6 +9,9 @@ Parameters:
     Type: String
     Description: Url for GitHub repo
     Default: "https://github.com/awsdevops2022/docker.git"
+
+#Need GitHub Personal Access Token. The PAT token must be stored in Parameters store
+#to avoid hard-coding of the credentials. This can also be managed by AWS Secrets Manager
 
   GitHubAccessToken:
     Type: AWS::SSM::Parameter::Value<String>
@@ -25,6 +29,7 @@ Resources:
       Token: !Ref GitHubAccessToken
 
 
+#CodeBuild service role is must for creating the build project
 
   CodeBuildServiceRole:
     Type: "AWS::IAM::Role"
@@ -72,7 +77,8 @@ Resources:
                 Resource:
                   - Fn::Sub: arn:aws:codebuild:${AWS::Region}:${AWS::AccountId}:report-group/SimpleDockerBaseImageProject-*
 
-  
+#Builds a docker image
+
   CodeBuildDockerProject:
     Type: AWS::CodeBuild::Project
     Properties: 
